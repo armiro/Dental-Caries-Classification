@@ -1,17 +1,17 @@
-import cv2
-import numpy as np
-import matplotlib.pyplot as plt
+import glob
 import os
 
-path = 'C://Users/Arman/Downloads/Compressed/dataset and code/train-val'
-for mask in os.listdir(path=path+'/masks'):
-    this_mask = cv2.imread(filename=path+'/masks/'+mask, flags=0)
-    cnts, _ = cv2.findContours(image=this_mask, mode=cv2.RETR_EXTERNAL, method=cv2.CHAIN_APPROX_SIMPLE)
-    i = 0
-    for cnt in cnts:
-        if cv2.contourArea(contour=cnt) > 30000:
-            print(cv2.contourArea(contour=cnt))
-            i += 1
-    if i > 0:
-        print(mask)
+path = './images/'
+for idx, file in enumerate(glob.glob(pathname=path+'**.jpg')):
+    os.rename(src=file, dst=path+'%d.jpg' % idx)
+
+path = './extracted_teeth/'
+for idx, folder in enumerate(os.listdir(path=path)):
+    os.rename(src=path + folder, dst=path + '%d' % idx)
+
+path = './extracted_teeth/'
+for folder in os.listdir(path=path):
+    subpath = path + folder
+    for file_idx, file in enumerate(glob.glob(pathname=subpath+'/**.bmp')):
+        os.rename(src=file, dst=subpath+'/%d-%d.bmp' % (int(folder), file_idx))
 
